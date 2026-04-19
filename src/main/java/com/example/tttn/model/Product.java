@@ -42,8 +42,13 @@ public class Product {
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
+	// Quan he N-1: nhieu Product co the thuoc cung mot Category.
+	// fetch = LAZY giup chi tai category khi thuc su can dung, tranh query du thua.
 	@ManyToOne(fetch = FetchType.LAZY)
+	// category_id la khoa ngoai trong bang products, tro toi categories.category_id.
+	// Neu muon bat buoc product phai co category, co the them nullable = false.
 	@JoinColumn(name = "category_id")
+	// Thuoc tinh object trong Java; JPA tu dong map thanh cot category_id trong DB.
 	private Category category;
 
 	@OneToMany(mappedBy = "product")

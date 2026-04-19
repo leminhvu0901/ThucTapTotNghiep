@@ -11,7 +11,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
+// @Entity: danh dau class Cart la JPA entity de map voi bang trong CSDL.
 @Entity
+// @Table: map entity vao bang cart.
+// uniqueConstraints: khong cho phep trung cap (user_id, product_id),
+// nghia la moi user chi co mot dong cart cho moi product.
 @Table(name = "cart", uniqueConstraints = @UniqueConstraint(name = "uk_cart_user_product", columnNames = {
 		"user_id", "product_id" }))
 public class Cart {

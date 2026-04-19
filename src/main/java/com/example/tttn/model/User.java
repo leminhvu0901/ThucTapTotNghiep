@@ -13,7 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+// @Entity: danh dau class User la mot JPA entity de ORM quan ly.
 @Entity
+// @Table(name = "users"): map entity nay vao bang users trong CSDL.
 @Table(name = "users")
 
 public class User {

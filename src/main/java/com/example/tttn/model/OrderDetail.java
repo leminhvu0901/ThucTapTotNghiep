@@ -24,7 +24,11 @@ public class OrderDetail {
 	@Column(name = "quantity")
 	private Integer quantity;
 
+	// price map vao cot price trong bang orderdetails.
+	// precision = 10, scale = 2: tong 10 chu so, trong do 2 chu so sau dau phay.
+	// Vi du gia tri hop le: 15000.00, 99999999.99.
 	@Column(name = "price", precision = 10, scale = 2)
+	// BigDecimal duoc dung de tinh tien chinh xac, tranh sai so khi dung float/double.
 	private BigDecimal price;
 
 	@ManyToOne(fetch = FetchType.LAZY)
