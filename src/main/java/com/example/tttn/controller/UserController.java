@@ -9,7 +9,7 @@ public class UserController {
 
 	@GetMapping({"/", "/homeUser"})
 	public String homeUser(Model model) {
-		return "homeUser";
+		return "user/homeUser";
 	}
 	
 

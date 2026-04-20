@@ -10839,6 +10839,10 @@ textarea.form-control-lg {
   font-size: 1.2rem;
 }
 
+#sidebar-wrapper .sidebar-heading a {
+  text-decoration: none !important;
+}
+
 #sidebar-wrapper .list-group {
   width: 15rem;
 }
