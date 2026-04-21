@@ -16,18 +16,18 @@ import com.example.tttn.dto.ProductForm;
 import com.example.tttn.model.Category;
 import com.example.tttn.model.Order;
 import com.example.tttn.model.Product;
-import com.example.tttn.service.AdminService;
 import com.example.tttn.service.ImageStorageService;
+import com.example.tttn.service.ProductService;
 import com.example.tttn.service.ResourceNotFoundException;
 
 @Controller
 public class AdminController {
 
-    private final AdminService adminService;
+    private final ProductService productService;
     private final ImageStorageService imageStorageService;
 
-    public AdminController(AdminService adminService, ImageStorageService imageStorageService) {
-        this.adminService = adminService;
+    public AdminController(ProductService productService, ImageStorageService imageStorageService) {
+        this.productService = productService;
         this.imageStorageService = imageStorageService;
     }
 
@@ -44,28 +44,28 @@ public class AdminController {
 
     @GetMapping({"/admin/sanpham"})
     public String adminSanpham(
-            @RequestParam(name = "keyword", required = false) String keyword,
-            @RequestParam(name = "editId", required = false) Integer editId,
+            @RequestParam(name = "keyword", required = false) String keyword, //key tim kiem
+            @RequestParam(name = "editId", required = false) Integer editId,  // lay du lieu cho form chinh sua 
             Model model) {
 
-        model.addAttribute("products", adminService.searchProducts(keyword));
-        model.addAttribute("categories", adminService.getAllCategories());
+        model.addAttribute("products", productService.searchProducts(keyword));
+        model.addAttribute("categories", productService.getAllCategories());
         model.addAttribute("keyword", keyword == null ? "" : keyword.trim());
 
+        //kiem tra du lieu form 
         if (editId != null) {
             try {
-                model.addAttribute("editingProduct", adminService.getProductById(editId));
+                model.addAttribute("editingProduct", productService.getProductById(editId));
             } catch (ResourceNotFoundException ex) {
                 model.addAttribute("error", ex.getMessage());
             }
         }
-
         return "admin/sanpham";
     }
 
     @GetMapping({"/admin/sanpham/them"})
     public String adminThemSanpham(Model model) {
-        model.addAttribute("categories", adminService.getAllCategories());
+        model.addAttribute("categories", productService.getAllCategories());
         return "admin/themsanpham";
     }
 
@@ -79,18 +79,18 @@ public class AdminController {
         String validationMessage = validateProductForm(productForm);
         if (validationMessage != null) {
             model.addAttribute("error", validationMessage);
-            model.addAttribute("categories", adminService.getAllCategories());
+            model.addAttribute("categories", productService.getAllCategories());
             return "admin/themsanpham";
         }
 
         try {
             String imagePath = imageStorageService.storeProductImage(imageFile);
             Product payload = mapToProduct(productForm, imagePath);
-            adminService.createProduct(payload);
+            productService.createProduct(payload);
             redirectAttributes.addFlashAttribute("message", "Them san pham thanh cong.");
             return "redirect:/admin/sanpham";
         } catch (RuntimeException ex) {
-            model.addAttribute("categories", adminService.getAllCategories());
+            model.addAttribute("categories", productService.getAllCategories());
             model.addAttribute("error", ex.getMessage());
             return "admin/themsanpham";
         }
@@ -110,14 +110,14 @@ public class AdminController {
         }
 
         try {
-            Product currentProduct = adminService.getProductById(productId);
+            Product currentProduct = productService.getProductById(productId);
             String imagePath = imageStorageService.storeProductImage(imageFile);
             if (imagePath == null) {
                 imagePath = currentProduct.getImage();
             }
 
             Product payload = mapToProduct(productForm, imagePath);
-            adminService.updateProduct(productId, payload);
+            productService.updateProduct(productId, payload);
             redirectAttributes.addFlashAttribute("message", "Cap nhat san pham thanh cong.");
             return "redirect:/admin/sanpham";
         } catch (RuntimeException ex) {
@@ -129,7 +129,7 @@ public class AdminController {
     @PostMapping({"/admin/sanpham/{productId}/xoa"})
     public String deleteProduct(@PathVariable Integer productId, RedirectAttributes redirectAttributes) {
         try {
-            adminService.deleteProduct(productId);
+            productService.deleteProduct(productId);
             redirectAttributes.addFlashAttribute("message", "Xoa san pham thanh cong.");
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
@@ -140,7 +140,7 @@ public class AdminController {
 
     @GetMapping({"/admin/donhang"})
     public String adminDonHang(Model model) {
-        List<Order> orders = adminService.getAllOrders();
+        List<Order> orders = productService.getAllOrders();
         model.addAttribute("orders", orders);
         model.addAttribute("orderStatuses", Order.Status.values());
 
@@ -154,7 +154,7 @@ public class AdminController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            adminService.updateOrderStatus(orderId, status);
+            productService.updateOrderStatus(orderId, status);
             redirectAttributes.addFlashAttribute("message", "Cap nhat trang thai don hang thanh cong.");
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
@@ -164,10 +164,13 @@ public class AdminController {
     }
 
     private void loadDashboardStats(Model model) {
-        model.addAttribute("totalProducts", adminService.countProducts());
-        model.addAttribute("totalOrders", adminService.countOrders());
-        model.addAttribute("pendingOrders", adminService.countOrdersByStatus(Order.Status.pending));
-        model.addAttribute("completedOrders", adminService.countOrdersByStatus(Order.Status.completed));
+        model.addAttribute("totalProducts", productService.countProducts());
+        model.addAttribute("totalOrders", productService.countOrders());
+        model.addAttribute("pendingOrders", productService.countOrdersByStatus(Order.Status.pending));
+        model.addAttribute("confirmedOrders", productService.countOrdersByStatus(Order.Status.confirmed));
+        model.addAttribute("shippingOrders", productService.countOrdersByStatus(Order.Status.shipping));
+        model.addAttribute("completedOrders", productService.countOrdersByStatus(Order.Status.completed));
+        model.addAttribute("cancelledOrders", productService.countOrdersByStatus(Order.Status.cancelled));
     }
 
     private Product mapToProduct(ProductForm productForm, String imagePath) {

@@ -26,17 +26,14 @@
             <!-- Page content wrapper-->
             <div id="page-content-wrapper">
                 <!-- Top navigation-->
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" >
                     <div class="container-fluid">
-                        <button class="btn btn-primary" id="sidebarToggle"> Thu gọn </button>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                       
+                        <button class="btn btn-primary" id="sidebarToggle"> Thu gọn </button>                       
                     </div>
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid py-4">
                     <h1 class="mb-4">TRANG CHU ADMIN</h1>
-
                     <div class="row g-3">
                         <div class="col-12 col-md-6 col-xl-3">
                             <div class="card border-0 shadow-sm h-100">
@@ -54,6 +51,7 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
                         <div class="col-12 col-md-6 col-xl-3">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
@@ -65,22 +63,38 @@
                         <div class="col-12 col-md-6 col-xl-3">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
+                                    <p class="text-muted mb-2">Don da xac nhan</p>
+                                    <h2 class="mb-0" th:text="${confirmedOrders}">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-12 col-md-6 col-xl-3">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <p class="text-muted mb-2">Don dang van chuyen</p>
+                                    <h2 class="mb-0" th:text="${shippingOrders}">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
                                     <p class="text-muted mb-2">Don hoan tat</p>
                                     <h2 class="mb-0" th:text="${completedOrders}">0</h2>
                                 </div>
                             </div>
                         </div>
+                         <div class="col-12 col-md-6 col-xl-3">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <p class="text-muted mb-2">Don da huy </p>
+                                    <h2 class="mb-0" th:text="${cancelledOrders}">0</h2>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card border-0 shadow-sm mt-4">
-                        <div class="card-header bg-white">
-                            <strong>TRUY CAP NHANH</strong>
-                        </div>
-                        <div class="card-body d-flex flex-wrap gap-2">
-                            <a class="btn btn-primary" href="/admin/sanpham">Quan ly san pham</a>
-                            <a class="btn btn-outline-primary" href="/admin/donhang">Quan ly don hang</a>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </div>

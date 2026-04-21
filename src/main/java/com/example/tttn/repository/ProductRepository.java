@@ -17,13 +17,13 @@ import com.example.tttn.model.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     // Load kem thong tin category cua tung product khi query.
-    // Lay tat ca Product va sap xep theo productId giam dan (moi nhat truoc).
+    // Lay tat ca Product va sap xep theo productId tang dan.
     @EntityGraph(attributePaths = { "category" })
-    List<Product> findAllByOrderByProductIdDesc();
+    List<Product> findAllByOrderByProductIdAsc();
 
     // Load kem category de tranh phat sinh nhieu query nho (N+1).
     // Tim Product co productName chua keyword, khong phan biet hoa/thuong.
-    // Ket qua duoc sap xep theo productId giam dan.
+    // Ket qua duoc sap xep theo productId tang dan.
     @EntityGraph(attributePaths = { "category" })
-    List<Product> findByProductNameContainingIgnoreCaseOrderByProductIdDesc(String keyword);
+    List<Product> findByProductNameContainingIgnoreCaseOrderByProductIdAsc(String keyword);
 }

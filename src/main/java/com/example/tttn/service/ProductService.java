@@ -15,34 +15,36 @@ import com.example.tttn.repository.ProductRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class AdminService {
+public class ProductService {
 
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final CategoryRepository categoryRepository;
 
-    public AdminService(ProductRepository productRepository, OrderRepository orderRepository,
+    public ProductService(ProductRepository productRepository, OrderRepository orderRepository,
             CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.categoryRepository = categoryRepository;
     }
 
+    //lay tat ca san pham 
     public List<Product> getAllProducts() {
-        return productRepository.findAllByOrderByProductIdDesc();
+        return productRepository.findAllByOrderByProductIdAsc();
     }
 
+    //tim kiem san pham 
     public List<Product> searchProducts(String keyword) {
         if (keyword == null || keyword.isBlank()) {
             return getAllProducts();
         }
 
-        return productRepository.findByProductNameContainingIgnoreCaseOrderByProductIdDesc(keyword.trim());
+        return productRepository.findByProductNameContainingIgnoreCaseOrderByProductIdAsc(keyword.trim());
     }
 
+    // lấy 1 sp theo id
     public Product getProductById(Integer productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay san pham voi id=" + productId));
+        return productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Khong tim thay san pham voi id=" + productId));
     }
 
     @Transactional
@@ -111,6 +113,7 @@ public class AdminService {
         return productRepository.count();
     }
 
+    //lay ds cac loai san pham
     public List<Category> getAllCategories() {
         return categoryRepository.findAllByOrderByCategoryNameAsc();
     }
