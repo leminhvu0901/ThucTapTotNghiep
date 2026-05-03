@@ -39,7 +39,7 @@ public class AdminController {
     @GetMapping({"/admin"})
     public String homeAdmin(Model model) {
         loadDashboardStats(model);
-        return "admin/homeAdmin";
+        return "admin/homeadmin";
     }
 
     @GetMapping({"/admin/sanpham"})
