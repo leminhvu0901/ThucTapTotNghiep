@@ -1,11 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Văn phòng phẩm Online</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    trang chu user o day
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/user">Văn phòng phẩm Online</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUser">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarUser">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/user/giohang">Giỏ hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/lichsu">Lịch sử mua hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/thanhtoan">Thanh toán</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nội dung chính -->
+    <div class="container mt-4">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-8">
+                <h2 class="fw-bold">Danh sách sản phẩm</h2>
+            </div>
+            <div class="col-md-4">
+                <form class="d-flex" action="/user" method="get">
+                    <input id="searchInput" class="form-control me-2" type="search" name="q" placeholder="Tìm kiếm sản phẩm" th:value="${q}" />
+                    <button class="btn btn-outline-light bg-primary text-white" type="submit">Tìm</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Danh sách sản phẩm -->
+        <div class="row">
+            <div class="col-12 mb-4" th:if="${#lists.isEmpty(products)}">
+                <div class="alert alert-warning text-center">Không tìm thấy sản phẩm nào.</div>
+            </div>
+
+
+            <div class="col-md-4 mb-4" th:each="product : ${products}">
+                <div class="card h-100 shadow-sm">
+                    <img th:src="${product.image}" class="card-img-top" alt="[[${product.productName}]]"
+                         onerror="this.src='https://via.placeholder.com/350x200?text=No+Image'" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold" th:text="${product.productName}">Tên sản phẩm</h5>
+                        <p class="card-text text-muted" th:text="${product.category != null ? product.category.categoryName : 'Chưa rõ'}">Danh mục</p>
+                        <p class="card-text" th:text="${product.description}">Mô tả ngắn gọn</p>
+                        <p class="card-text fw-bold mt-auto">Giá: <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">0</span>đ</p>
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/user/product/{id}(id=${product.productId})}" class="btn btn-outline-primary btn-sm">Xem chi tiết</a>
+                           <form th:action="@{/user/cart/add}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.productId}" />
+                                <input type="number" name="quantity" value="1" min="1" class="form-control form-control-sm" style="width:80px;" />
+                                <button type="submit" class="btn btn-success btn-sm">Thêm vào giỏ hàng</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <span th:text="${successMessage}"></span>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const value = this.value.trim();
+            if (value === '') {
+                window.location.href = '/user';
+            }
+        });
+    }
+</script>
 </body>
 </html>
+
+
+

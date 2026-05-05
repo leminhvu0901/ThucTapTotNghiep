@@ -206,4 +206,24 @@ public class ProductService {
         return categoryRepository.findById(category.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay danh muc voi id=" + category.getCategoryId()));
     }
+
+    //Cua Hung
+    //ham tim kiem san pham theo ten // 
+    public List<Product> searchProductsUser(String keyword) {
+    if (keyword == null || keyword.isBlank()) {
+        return getAllProducts();
+    }
+    String normalizedKeyword = removeVietnameseAccents(keyword.trim());
+    return productRepository.findAll().stream()
+            .filter(p -> removeVietnameseAccents(p.getProductName().toLowerCase())
+                    .contains(normalizedKeyword.toLowerCase()))
+            .toList();
+    }
+    // Hàm loại bỏ dấu tiếng Việt để tìm kiếm không phân biệt dấu
+    private String removeVietnameseAccents(String str) {
+        if (str == null) return null;
+        String normalized = java.text.Normalizer.normalize(str, java.text.Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}", "");
+    }
+
 }
