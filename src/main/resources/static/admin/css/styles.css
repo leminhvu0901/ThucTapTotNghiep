@@ -12522,16 +12522,47 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   object-fit: cover;
   border-radius: 8px;
 }
- #imagePreview {
-                width: 120px; height: 120px; object-fit: cover;
-                border-radius: 8px; display: none;
-            }
-            .upload-area {
-                border: 2px dashed #dee2e6;
-                border-radius: 8px;
-                padding: 1rem;
-                text-align: center;
-                cursor: pointer;
-                transition: border-color 0.2s;
-            }
-            .upload-area:hover { border-color: #0d6efd; }
+
+#imagePreview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: none;
+}
+
+.upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.upload-area:hover {
+  border-color: #0d6efd;
+}
+
+.badge-status {
+  font-size: 0.85rem;
+  padding: 0.45em 0.9em;
+  border-radius: 20px;
+}
+
+.info-label {
+  color: #6c757d;
+  width: 140px;
+  vertical-align: top;
+}
+
+.info-value {
+  font-weight: 500;
+}
+
+.product-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
