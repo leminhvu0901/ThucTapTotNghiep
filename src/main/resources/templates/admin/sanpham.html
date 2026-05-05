@@ -1,159 +1,167 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>SAN PHAM</title>
-        <!-- Favicon-->
+        <title>Quản lý sản phẩm</title>
         <link rel="icon" type="image/x-icon" th:href="@{/admin/assets/favicon.ico}" href="/admin/assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
         <link th:href="@{/admin/css/styles.css}" href="/admin/css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <div class="d-flex" id="wrapper">
-            <!-- Sidebar-->
+            <!-- Sidebar -->
             <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light" >
-                    <a href="/admin" class="text-decoration-none"> TRANG CHU ADMIN</a>
+                <div class="sidebar-heading border-bottom bg-light">
+                    <a href="/admin" class="text-decoration-none">TRANG CHỦ ADMIN</a>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/sanpham">Sản phẩm </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" href="/admin/sanpham">Sản phẩm</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
                 </div>
             </div>
-            <!-- Page content wrapper-->
+
             <div id="page-content-wrapper">
-                <!-- Top navigation-->
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <div class="container-fluid">
-                        <button class="btn btn-primary" id="sidebarToggle"> Thu gọn </button>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                       
-                    </div>
-                </nav>
-                <!-- Page content-->
                 <div class="container-fluid py-4">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h1 class="mb-0">QUAN LY SAN PHAM</h1>
-                        <a class="btn btn-success" th:href="@{/admin/sanpham/them}">Them san pham moi</a>
+                    <div class="d-flex justify-content-between align-items-center mb-4 mx-5">
+                        <h4 class="mb-0 fw-bold">Quản lý sản phẩm</h4>
+                        <a class="btn btn-success px-4" th:href="@{/admin/sanpham/them}">+ Thêm sản phẩm</a>
                     </div>
 
-                    <div class="alert alert-success" role="alert" th:if="${message}" th:text="${message}"></div>
-                    <div class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}"></div>
+                    <div class="alert alert-success rounded-3" role="alert" th:if="${message}" th:text="${message}"></div>
+                    <div class="alert alert-danger rounded-3" role="alert" th:if="${error}" th:text="${error}"></div>
 
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white">
-                            <strong>TIM KIEM SAN PHAM</strong>
-                        </div>
-                        <div class="card-body">
+                    <!-- Tìm kiếm -->
+                    <div class="card border-0 shadow-sm rounded-3 mb-4">
+                        <div class="card-body py-3">
                             <form class="row g-2 align-items-end" method="get" th:action="@{/admin/sanpham}">
                                 <div class="col-12 col-md-8">
-                                    <label class="form-label" for="keyword">Tu khoa</label>
-                                    <input class="form-control" id="keyword" name="keyword" th:value="${keyword}" type="text" placeholder="Nhap ten san pham..." />
+                                    <input class="form-control" name="keyword" th:value="${keyword}"
+                                           type="text" placeholder="Tìm theo tên sản phẩm..." />
                                 </div>
                                 <div class="col-6 col-md-2 d-grid">
-                                    <button class="btn btn-primary" type="submit">Tim</button>
+                                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                                 </div>
                                 <div class="col-6 col-md-2 d-grid">
-                                    <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham}">Bo loc</a>
+                                    <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham}">Xóa bộ lọc</a>
                                 </div>
                             </form>
                         </div>
                     </div>
 
-                    <div class="card border-0 shadow-sm mb-4" th:if="${editingProduct != null}">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <strong>CHINH SUA SAN PHAM #<span th:text="${editingProduct.productId}">0</span></strong>
-                            <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/sanpham(keyword=${keyword})}">Dong</a>
+                    <!-- Form chỉnh sửa -->
+                    <div class="card border-0 shadow-sm rounded-3 mb-4" th:if="${editingProduct != null}">
+                        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+                            <h6 class="mb-0 fw-bold">
+                                Chỉnh sửa sản phẩm
+                                <span class="text-muted fw-normal" th:text="${'#' + editingProduct.productId}"></span>
+                            </h6>
+                            <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/sanpham(keyword=${keyword})}">✕ Đóng</a>
                         </div>
                         <div class="card-body">
-                            <form class="row g-3" enctype="multipart/form-data" method="post" th:action="@{|/admin/sanpham/${editingProduct.productId}/capnhat|}">
+                            <form class="row g-3" enctype="multipart/form-data" method="post"
+                                  th:action="@{|/admin/sanpham/${editingProduct.productId}/capnhat|}">
                                 <div class="col-12 col-md-6">
-                                    <label class="form-label" for="editProductName">Ten san pham</label>
-                                    <input class="form-control" id="editProductName" name="productName" required th:value="${editingProduct.productName}" type="text" />
+                                    <label class="form-label fw-semibold">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="productName" required
+                                           th:value="${editingProduct.productName}" type="text" />
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <label class="form-label" for="editCategory">Danh muc</label>
-                                    <select class="form-select" id="editCategory" name="categoryId">
-                                        <option value="">Khong chon</option>
-                                        <option
-                                            th:each="category : ${categories}"
-                                            th:selected="${editingProduct.category != null and editingProduct.category.categoryId == category.categoryId}"
-                                            th:text="${category.categoryName}"
-                                            th:value="${category.categoryId}">
+                                    <label class="form-label fw-semibold">Danh mục</label>
+                                    <select class="form-select" name="categoryId">
+                                        <option value="">-- Không chọn --</option>
+                                        <option th:each="c : ${categories}"
+                                                th:value="${c.categoryId}"
+                                                th:text="${c.categoryName}"
+                                                th:selected="${editingProduct.category != null and editingProduct.category.categoryId == c.categoryId}">
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label" for="editDescription">Mo ta</label>
-                                    <textarea class="form-control" id="editDescription" name="description" rows="2" th:text="${editingProduct.description}"></textarea>
+                                    <label class="form-label fw-semibold">Mô tả</label>
+                                    <textarea class="form-control" name="description" rows="2"
+                                              th:text="${editingProduct.description}"></textarea>
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label" for="editPrice">Gia</label>
-                                    <input class="form-control" id="editPrice" min="0" name="price" required step="0.01" th:value="${editingProduct.price}" type="number" />
+                                    <label class="form-label fw-semibold">Giá (₫) <span class="text-danger">*</span></label>
+                                    <input class="form-control" min="0" name="price" required step="0.01"
+                                           th:value="${editingProduct.price}" type="number" />
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label" for="editStock">Ton kho</label>
-                                    <input class="form-control" id="editStock" min="0" name="stock" required th:value="${editingProduct.stock}" type="number" />
+                                    <label class="form-label fw-semibold">Tồn kho <span class="text-danger">*</span></label>
+                                    <input class="form-control" min="0" name="stock" required
+                                           th:value="${editingProduct.stock}" type="number" />
                                 </div>
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label" for="editImageFile">Hinh anh moi</label>
-                                    <input class="form-control" id="editImageFile" name="imageFile" accept="image/*" type="file" />
-                                    <small class="text-muted">Bo trong neu khong doi anh.</small>
+                                    <label class="form-label fw-semibold">Ảnh mới</label>
+                                    <input class="form-control" name="imageFile" accept="image/*" type="file" />
+                                    <small class="text-muted">Để trống nếu không đổi ảnh.</small>
                                 </div>
                                 <div class="col-12" th:if="${editingProduct.image != null}">
-                                    <label class="form-label">Anh hien tai</label>
+                                    <label class="form-label fw-semibold">Ảnh hiện tại</label>
                                     <div>
-                                        <img alt="Anh san pham" class="border rounded" style="height: 80px; object-fit: cover; width: 80px;" th:src="${editingProduct.image}" />
+                                        <img th:src="${editingProduct.image}" alt="Ảnh sản phẩm"
+                                             class="preview-img border" />
                                     </div>
                                 </div>
-                                <div class="col-12 d-flex justify-content-end gap-2">
-                                    <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham(keyword=${keyword})}">Huy</a>
-                                    <button class="btn btn-primary" type="submit">Luu thay doi</button>
+                                <div class="col-12 d-flex justify-content-end gap-2 pt-2">
+                                    <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham(keyword=${keyword})}">Hủy</a>
+                                    <button class="btn btn-primary px-4" type="submit">Lưu thay đổi</button>
                                 </div>
                             </form>
                         </div>
                     </div>
 
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-white">
-                            <strong>DANH SACH SAN PHAM</strong>
-                        </div>
+                    <!-- Danh sách sản phẩm -->
+                    <div class="card border-0 shadow-sm rounded-3">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Ten san pham</th>
-                                        <th>Danh muc</th>
-                                        <th>Gia</th>
-                                        <th>Ton kho</th>
-                                        <th>Ngay tao</th>
-                                        <th>Image</th>
-                                        <th>Hanh dong</th>
+                                        <th class="px-4" style="width:70px">Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Danh mục</th>
+                                        <th class="text-end">Giá</th>
+                                        <th class="text-center">Tồn kho</th>
+                                        <th>Ngày tạo</th>
+                                        <th class="text-center">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:if="${#lists.isEmpty(products)}">
-                                        <td class="text-center py-4" colspan="8">Chua co san pham nao.</td>
+                                        <td class="text-center py-5 text-muted" colspan="7">Chưa có sản phẩm nào.</td>
                                     </tr>
                                     <tr th:each="product : ${products}">
-                                        <td th:text="${product.productId}">1</td>
-                                        <td th:text="${product.productName}">Ten san pham</td>
-                                        <td th:text="${product.category != null ? product.category.categoryName : 'Khong co'}">Khong co</td>
-                                        <td th:text="${product.price != null ? #numbers.formatDecimal(product.price, 1, 2) : '0.00'}">0.00</td>
-                                        <td th:text="${product.stock}">0</td>
-                                        <td th:text="${product.createdAt != null ? #temporals.format(product.createdAt, 'dd/MM/yyyy HH:mm') : '-'}">-</td>
-                                        <td>
-                                            <img th:if="${product.image != null}" alt="Anh san pham" class="border rounded" style="height: 56px; object-fit: cover; width: 56px;" th:src="${product.image}" />
-                                            <span th:if="${product.image == null}">-</span>
+                                        <td class="px-4">
+                                            <img th:if="${product.image != null}" th:src="${product.image}"
+                                                 alt="Ảnh sản phẩm" class="product-img border" />
+                                            <div th:if="${product.image == null}"
+                                                 class="product-img border d-flex align-items-center justify-content-center bg-light text-muted"
+                                                 style="font-size:0.65rem">Chưa có</div>
                                         </td>
-                                        <td class="text-nowrap">
-                                            <a class="btn btn-sm btn-outline-primary" th:href="@{/admin/sanpham(editId=${product.productId},keyword=${keyword})}">Sua</a>
-                                            <form class="d-inline" method="post" onsubmit="return confirm('Ban co chac chan muon xoa san pham nay?');" th:action="@{|/admin/sanpham/${product.productId}/xoa|}">
-                                                <button class="btn btn-sm btn-outline-danger" type="submit">Xoa</button>
+                                        <td class="fw-semibold" th:text="${product.productName}"></td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border"
+                                                  th:text="${product.category != null ? product.category.categoryName : '—'}">
+                                            </span>
+                                        </td>
+                                        <td class="text-end"
+                                            th:text="${product.price != null ? #numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT') + ' ₫' : '—'}">
+                                        </td>
+                                        <td class="text-center">
+                                            <span th:text="${product.stock}"
+                                                  th:class="${product.stock != null and product.stock <= 5 ? 'text-danger fw-bold' : ''}">
+                                            </span>
+                                        </td>
+                                        <td class="text-muted small"
+                                            th:text="${product.createdAt != null ? #temporals.format(product.createdAt, 'dd/MM/yyyy') : '—'}">
+                                        </td>
+                                        <td class="text-center text-nowrap">
+                                            <a class="btn btn-sm btn-outline-primary me-1"
+                                               th:href="@{/admin/sanpham(editId=${product.productId},keyword=${keyword})}">Sửa</a>
+                                            <form class="d-inline" method="post"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');"
+                                                  th:action="@{|/admin/sanpham/${product.productId}/xoa|}">
+                                                <button class="btn btn-sm btn-outline-danger" type="submit">Xóa</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -164,9 +172,8 @@
                 </div>
             </div>
         </div>
-        <!-- Bootstrap core JS-->
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         <script th:src="@{/admin/js/scripts.js}" src="/admin/js/scripts.js"></script>
     </body>
 </html>

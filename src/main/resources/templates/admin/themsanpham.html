@@ -1,89 +1,170 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>THEM SAN PHAM</title>
-        <link rel="icon" type="image/x-icon" th:href="@{/admin/assets/favicon.ico}" href="/admin/assets/favicon.ico" />
-        <link th:href="@{/admin/css/styles.css}" href="/admin/css/styles.css" rel="stylesheet" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Thêm sản phẩm mới</title>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            th:href="@{/admin/assets/favicon.ico}"
+            href="/admin/assets/favicon.ico"
+        >
+        <link th:href="@{/admin/css/styles.css}" href="/admin/css/styles.css" rel="stylesheet">
     </head>
     <body>
         <div class="d-flex" id="wrapper">
+            <!-- Sidebar -->
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light">
-                    <a href="/admin" class="text-decoration-none"> TRANG CHU ADMIN</a>
+                    <a href="/admin" class="text-decoration-none">TRANG CHỦ ADMIN</a>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/sanpham">Sản phẩm </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" href="/admin/sanpham">Sản phẩm</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
                 </div>
             </div>
             <div id="page-content-wrapper">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <div class="container-fluid">
-                        <button class="btn btn-primary" id="sidebarToggle"> Thu gọn </button>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    </div>
-                </nav>
                 <div class="container-fluid py-4">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-1">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/admin/sanpham" class="text-decoration-none">Sản phẩm</a>
+                            </li>
+                            <li class="breadcrumb-item active">Thêm mới</li>
+                        </ol>
+                    </nav>
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h1 class="mb-0">THEM SAN PHAM MOI</h1>
-                        <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham}">Ve danh sach</a>
+                        <h4 class="mb-0 fw-bold">Thêm sản phẩm mới</h4>
+                        <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham}">← Quay lại</a>
                     </div>
-
-                    <div class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}"></div>
-
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white">
-                            <strong>THONG TIN SAN PHAM</strong>
+                    <div
+                        class="alert alert-danger rounded-3"
+                        role="alert"
+                        th:if="${error}"
+                        th:text="${error}"
+                    ></div>
+                    <form
+                        class="row g-0"
+                        enctype="multipart/form-data"
+                        method="post"
+                        th:action="@{/admin/sanpham/them}"
+                        th:object="${productForm}"
+                    >
+                        <div class="col-12 col-lg-8">
+                            <div class="card border-0 shadow-sm rounded-3 me-lg-3">
+                                <div class="card-header bg-white border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">Thông tin sản phẩm</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold">
+                                                Tên sản phẩm
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input
+                                                class="form-control"
+                                                th:field="*{productName}"
+                                                type="text"
+                                                placeholder="Nhập tên sản phẩm..."
+                                            >
+                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold">Mô tả</label>
+                                            <textarea
+                                                class="form-control"
+                                                rows="4"
+                                                th:field="*{description}"
+                                                placeholder="Nhập mô tả sản phẩm..."
+                                            ></textarea>
+                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label fw-semibold">
+                                                Giá bán (₫)
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input
+                                                class="form-control"
+                                                min="0"
+                                                step="1"
+                                                th:field="*{price}"
+                                                type="number"
+                                                placeholder="0"
+                                            >
+                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label fw-semibold">
+                                                Số lượng tồn kho
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input
+                                                class="form-control"
+                                                min="0"
+                                                th:field="*{stock}"
+                                                type="number"
+                                                placeholder="0"
+                                            >
+                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold">Danh mục</label>
+                                            <select class="form-select" th:field="*{categoryId}">
+                                                <option value="">-- Không chọn --</option>
+                                                <option th:each="c : ${categories}" th:value="${c.categoryId}" th:text="${c.categoryName}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form class="row g-3" enctype="multipart/form-data" method="post" th:action="@{/admin/sanpham/them}" th:object="${productForm}">
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label" for="newProductName">Ten san pham</label>
-                                    <input class="form-control" id="newProductName" th:field="*{productName}" type="text" />
-                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></div>
+                        <!-- Ảnh sản phẩm -->
+                        <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+                            <div class="card border-0 shadow-sm rounded-3">
+                                <div class="card-header bg-white border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">Ảnh sản phẩm</h6>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label" for="newCategory">Danh muc</label>
-                                    <select class="form-select" id="newCategory" th:field="*{categoryId}">
-                                        <option value="">Khong chon</option>
-                                        <option th:each="category : ${categories}" th:text="${category.categoryName}" th:value="${category.categoryId}"></option>
-                                    </select>
-                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
+                                <div class="card-body text-center">
+                                    <img
+                                        id="imagePreview"
+                                        src="#"
+                                        alt="Xem trước ảnh"
+                                        class="mb-3 border"
+                                        style="display:none; max-width:100%; max-height:200px; object-fit:contain;"
+                                    >
+                                    <div class="upload-area mb-2" onclick="document.getElementById('imageFile').click()">
+                                        <div class="text-muted small">
+                                            <div class="fs-4 mb-1"></div>
+                                            Nhấn để chọn ảnh
+                                        </div>
+                                    </div>
+                                    <input
+                                        class="d-none"
+                                        id="imageFile"
+                                        name="imageFile"
+                                        accept="image/*"
+                                        type="file"
+                                        onchange="previewImage(this)"
+                                    >
+                                    <small class="text-muted">PNG, JPG, WEBP — Tối đa 10MB</small>
                                 </div>
-                                <div class="col-12">
-                                    <label class="form-label" for="newDescription">Mo ta</label>
-                                    <textarea class="form-control" id="newDescription" rows="3" th:field="*{description}"></textarea>
-                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="newPrice">Gia</label>
-                                    <input class="form-control" id="newPrice" min="0" step="0.01" th:field="*{price}" type="number" />
-                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="newStock">Ton kho</label>
-                                    <input class="form-control" id="newStock" min="0" th:field="*{stock}" type="number" />
-                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="newImageFile">Hinh anh</label>
-                                    <input class="form-control" id="newImageFile" name="imageFile" accept="image/*" type="file" />
-                                </div>
-                                <div class="col-12 d-flex justify-content-end gap-2">
-                                    <a class="btn btn-outline-secondary" th:href="@{/admin/sanpham}">Huy</a>
-                                    <button class="btn btn-success" type="submit">Them san pham</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <!-- Nút submit -->
+                        <div class="col-12 mt-4 d-flex justify-content-end gap-2">
+                            <a class="btn btn-outline-secondary px-4" th:href="@{/admin/sanpham}">Hủy</a>
+                            <button class="btn btn-success px-5" type="submit">Thêm sản phẩm</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script th:src="@{/admin/js/scripts.js}" src="/admin/js/scripts.js"></script>
+
     </body>
 </html>

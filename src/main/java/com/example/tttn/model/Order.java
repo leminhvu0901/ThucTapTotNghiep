@@ -109,4 +109,12 @@ public class Order {
 	public void setOrderDetails(List<OrderDetail> orderDetails) {
 		this.orderDetails = orderDetails;
 	}
+
+	public BigDecimal getCalculatedTotal() {
+		if (orderDetails == null || orderDetails.isEmpty()) return BigDecimal.ZERO;
+		return orderDetails.stream()
+				.filter(d -> d.getPrice() != null && d.getQuantity() != null)
+				.map(d -> d.getPrice().multiply(BigDecimal.valueOf(d.getQuantity())))
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
 }

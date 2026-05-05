@@ -19,11 +19,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // Load kem thong tin category cua tung product khi query.
     // Lay tat ca Product va sap xep theo productId tang dan.
     @EntityGraph(attributePaths = { "category" })
-    List<Product> findAllByOrderByProductIdAsc();
+    List<Product> findAllByOrderByProductIdDesc();
 
     // Load kem category de tranh phat sinh nhieu query nho (N+1).
     // Tim Product co productName chua keyword, khong phan biet hoa/thuong.
     // Ket qua duoc sap xep theo productId tang dan.
     @EntityGraph(attributePaths = { "category" })
-    List<Product> findByProductNameContainingIgnoreCaseOrderByProductIdAsc(String keyword);
+    List<Product> findByProductNameContainingIgnoreCaseOrderByProductIdDesc(String keyword);
 }

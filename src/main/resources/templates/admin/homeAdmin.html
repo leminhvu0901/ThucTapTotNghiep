@@ -1,106 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>TRANG CHU </title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" th:href="@{/admin/assets/favicon.ico}" href="/admin/assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link th:href="@{/admin/css/styles.css}" href="/admin/css/styles.css" rel="stylesheet" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Trang chủ Admin</title>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            th:href="@{/admin/assets/favicon.ico}"
+            href="/admin/assets/favicon.ico"
+        >
+        <link th:href="@{/admin/css/styles.css}" href="/admin/css/styles.css" rel="stylesheet">
     </head>
     <body>
         <div class="d-flex" id="wrapper">
-            <!-- Sidebar-->
+            <!-- Sidebar -->
             <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light" >
-                    <a href="/admin" class="text-decoration-none"> TRANG CHU ADMIN</a>
+                <div class="sidebar-heading border-bottom bg-light">
+                    <a href="/admin" class="text-decoration-none">TRANG CHỦ ADMIN</a>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/sanpham">Sản phẩm </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/sanpham">Sản phẩm</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
                 </div>
             </div>
-            <!-- Page content wrapper-->
-            <div id="page-content-wrapper">
-                <!-- Top navigation-->
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" >
-                    <div class="container-fluid">
-                        <button class="btn btn-primary" id="sidebarToggle"> Thu gọn </button>                       
-                    </div>
-                </nav>
-                <!-- Page content-->
-                <div class="container-fluid py-4">
-                    <h1 class="mb-4">TRANG CHU ADMIN</h1>
-                    <div class="row g-3">
-                        <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Tong san pham</p>
-                                    <h2 class="mb-0" th:text="${totalProducts}">0</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Tong don hang</p>
-                                    <h2 class="mb-0" th:text="${totalOrders}">0</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Don cho xu ly</p>
-                                    <h2 class="mb-0" th:text="${pendingOrders}">0</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Don da xac nhan</p>
-                                    <h2 class="mb-0" th:text="${confirmedOrders}">0</h2>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Don dang van chuyen</p>
-                                    <h2 class="mb-0" th:text="${shippingOrders}">0</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Don hoan tat</p>
-                                    <h2 class="mb-0" th:text="${completedOrders}">0</h2>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-12 col-md-6 col-xl-3">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <p class="text-muted mb-2">Don da huy </p>
-                                    <h2 class="mb-0" th:text="${cancelledOrders}">0</h2>
-                                </div>
+            <div class="container-fluid py-4">
+                <h4 class="fw-bold mb-4">Tổng quan</h4>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-3">
+                        <div class="card border-0 shadow-sm stat-card blue h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Tổng sản phẩm</div>
+                                <div class="stat-num text-primary" th:text="${totalProducts}">0</div>
                             </div>
                         </div>
                     </div>
-
-                   
+                    <div class="col-6 col-xl-3">
+                        <div class="card border-0 shadow-sm stat-card green h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Tổng đơn hàng</div>
+                                <div class="stat-num text-success" th:text="${totalOrders}">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Trạng thái đơn hàng -->
+                <h6 class="fw-semibold text-muted mb-3">Đơn hàng theo trạng thái</h6>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 col-xl-2">
+                        <div class="card border-0 shadow-sm stat-card yellow h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Chờ xử lý</div>
+                                <div class="stat-num text-warning" th:text="${pendingOrders}">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-2">
+                        <div class="card border-0 shadow-sm stat-card blue h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Đã xác nhận</div>
+                                <div class="stat-num text-primary" th:text="${confirmedOrders}">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-2">
+                        <div class="card border-0 shadow-sm stat-card cyan h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Đang giao</div>
+                                <div class="stat-num text-info" th:text="${shippingOrders}">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-2">
+                        <div class="card border-0 shadow-sm stat-card green h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Hoàn thành</div>
+                                <div class="stat-num text-success" th:text="${completedOrders}">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-2">
+                        <div class="card border-0 shadow-sm stat-card red h-100">
+                            <div class="card-body">
+                                <div class="stat-label">Đã hủy</div>
+                                <div class="stat-num text-danger" th:text="${cancelledOrders}">0</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         <script th:src="@{/admin/js/scripts.js}" src="/admin/js/scripts.js"></script>
     </body>
 </html>

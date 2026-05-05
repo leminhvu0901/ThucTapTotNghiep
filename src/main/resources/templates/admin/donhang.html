@@ -1,85 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>DON HANG </title>
-        <!-- Favicon-->
+        <title>Quản lý đơn hàng</title>
         <link rel="icon" type="image/x-icon" th:href="@{/admin/assets/favicon.ico}" href="/admin/assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
         <link th:href="@{/admin/css/styles.css}" href="/admin/css/styles.css" rel="stylesheet" />
+
     </head>
     <body>
         <div class="d-flex" id="wrapper">
-            <!-- Sidebar-->
+            <!-- Sidebar -->
             <div class="border-end bg-white" id="sidebar-wrapper">
-                 <div class="sidebar-heading border-bottom bg-light "  >
-                    <a href="/admin" class="text-decoration-none"> TRANG CHU ADMIN</a>
+                <div class="sidebar-heading border-bottom bg-light">
+                    <a href="/admin" class="text-decoration-none fw-bold">TRANG CHỦ ADMIN</a>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/sanpham">Sản phẩm </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/admin/donhang">Đơn hàng</a>
+                    <a class="list-group-item  list-group-item-light p-3" href="/admin/sanpham">Sản phẩm</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" href="/admin/donhang">Đơn hàng</a>
                 </div>
             </div>
-            <!-- Page content wrapper-->
+
             <div id="page-content-wrapper">
-                <!-- Top navigation-->
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <div class="container-fluid">
-                        <button class="btn btn-primary" id="sidebarToggle"> Thu gọn </button>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                        
-                    </div>
-                </nav>
-                <!-- Page content-->
                 <div class="container-fluid py-4">
-                    <h1 class="mb-4">QUAN LY DON HANG</h1>
+                    <div class="d-flex justify-content-around align-items-center mb-4">
+                        <h4 class="mb-0 fw-bold">Quản lý đơn hàng</h4>
+                        <span class="fw-bold text-danger" th:text="${'Tổng: ' + #lists.size(orders) + ' đơn'}"></span>
+                    </div>
 
-                    <div class="alert alert-success" role="alert" th:if="${message}" th:text="${message}"></div>
-                    <div class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}"></div>
+                    <div class="alert alert-success rounded-3" role="alert" th:if="${message}" th:text="${message}"></div>
+                    <div class="alert alert-danger rounded-3" role="alert" th:if="${error}" th:text="${error}"></div>
 
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-white">
-                            <strong>DANH SACH DON HANG</strong>
-                        </div>
+                    <div class="card border-0 shadow-xl rounded-3">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Khach hang</th>
-                                        <th>Ngay dat</th>
-                                        <th>Tong tien</th>
-                                        <th>Trang thai hien tai</th>
-                                        <th>Cap nhat trang thai</th>
+                                        <th class="px-4">Mã đơn</th>
+                                        <th>Khách hàng</th>
+                                        <th>Ngày đặt</th>
+                                        <th class="text-end">Tổng tiền</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th class="text-center">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:if="${#lists.isEmpty(orders)}">
-                                        <td class="text-center py-4" colspan="6">Chua co don hang nao.</td>
+                                        <td class="text-center py-5 text-muted" colspan="6">Chưa có đơn hàng nào.</td>
                                     </tr>
                                     <tr th:each="order : ${orders}">
-                                        <td th:text="${order.orderId}">1</td>
-                                        <td th:text="${order.user != null ? (order.user.fullName != null ? order.user.fullName : order.user.username) : 'N/A'}">Khach hang</td>
-                                        <td th:text="${order.orderDate != null ? #temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm') : '-'}">-</td>
-                                        <td th:text="${order.totalAmount != null ? #numbers.formatDecimal(order.totalAmount, 1, 2) : '0.00'}">0.00</td>
-                                        <td>
-                                            <span class="badge text-bg-secondary" th:text="${order.status}">pending</span>
+                                        <td class="px-4 fw-semibold" th:text="${'#' + order.orderId}"></td>
+                                        <td th:text="${order.user != null ? (order.user.fullName != null ? order.user.fullName : order.user.username) : 'N/A'}"></td>
+                                        <td th:text="${order.orderDate != null ? #temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm') : '-'}"></td>
+                                        <td class="text-end fw-semibold"
+                                            th:text="${order.totalAmount != null ? #numbers.formatDecimal(order.totalAmount, 1, 'COMMA', 0, 'POINT') + ' ₫' : '0 ₫'}">
                                         </td>
-                                        <td>
-                                            <form class="d-flex gap-2" method="post" th:action="@{|/admin/donhang/${order.orderId}/trangthai|}">
-                                                <select class="form-select form-select-sm" name="status">
-                                                    <option
-                                                        th:each="status : ${orderStatuses}"
-                                                        th:selected="${status == order.status}"
-                                                        th:text="${status}"
-                                                        th:value="${status}">
-                                                    </option>
-                                                </select>
-                                                <button class="btn btn-sm btn-primary text-nowrap" type="submit">Luu</button>
-                                            </form>
+                                        <td class="text-center">
+                                            <span class="badge-status"
+                                                th:classappend="${order.status.name() == 'pending'   ? 'bg-warning text-dark' :
+                                                                 order.status.name() == 'confirmed'  ? 'bg-primary text-white' :
+                                                                 order.status.name() == 'shipping'   ? 'bg-info text-dark' :
+                                                                 order.status.name() == 'completed'  ? 'bg-success text-white' :
+                                                                                                       'bg-danger text-white'}"
+                                                th:text="${order.status.name() == 'pending'   ? 'Chờ xử lý' :
+                                                           order.status.name() == 'confirmed'  ? 'Đã xác nhận' :
+                                                           order.status.name() == 'shipping'   ? 'Đang giao hàng' :
+                                                           order.status.name() == 'completed'  ? 'Hoàn thành' :
+                                                                                                  'Đã hủy'}">
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-outline-primary px-3"
+                                               th:href="@{|/admin/donhang/${order.orderId}|}">
+                                                Chi tiết
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -89,9 +83,8 @@
                 </div>
             </div>
         </div>
-        <!-- Bootstrap core JS-->
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         <script th:src="@{/admin/js/scripts.js}" src="/admin/js/scripts.js"></script>
     </body>
 </html>
