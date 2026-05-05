@@ -32,13 +32,10 @@ public class ImageStorageService {
         try {
             byte[] imageBytes = imageFile.getBytes();
 
-            // Đường dẫn tuyệt đối đến target/classes (classpath root)
             Path classpathRoot = new ClassPathResource("").getFile().toPath();
 
-            // Lưu vào target/classes/static/image để phục vụ ngay lập tức
             saveImageToDirectory(classpathRoot.resolve("static/image"), sanitizedFileName, imageBytes);
 
-            // Lưu vào src/main/resources/static/image để giữ lại sau khi build lại
             Path srcImageDir = classpathRoot.getParent().getParent()
                     .resolve("src/main/resources/static/image");
             saveImageToDirectory(srcImageDir, sanitizedFileName, imageBytes);
@@ -49,34 +46,34 @@ public class ImageStorageService {
         }
     }
 
+    //xoa anh trong thu muc
     public void deleteProductImage(String imagePath) {
         if (imagePath == null || imagePath.isBlank()) {
             return;
         }
-
-        // imagePath dạng "/image/filename.jpg" → lấy tên file
-        String fileName = Paths.get(imagePath).getFileName().toString();
+        String fileName = Paths.get(imagePath).getFileName().toString();//;lay ten anh
 
         try {
-            Path classpathRoot = new ClassPathResource("").getFile().toPath();
+            Path classpathRoot = new ClassPathResource("").getFile().toPath();//target/classes
             deleteImageFromDirectory(classpathRoot.resolve("static/image"), fileName);
             deleteImageFromDirectory(classpathRoot.getParent().getParent()
                     .resolve("src/main/resources/static/image"), fileName);
         } catch (IOException ex) {
-            // Không throw - việc xóa ảnh thất bại không nên chặn xóa sản phẩm
         }
     }
 
+    //ham xoa anh 
     private void deleteImageFromDirectory(Path baseDir, String fileName) throws IOException {
         Path target = baseDir.toAbsolutePath().normalize().resolve(fileName).normalize();
         Files.deleteIfExists(target);
     }
 
+    //ham luu anh vao thu muc
     private void saveImageToDirectory(Path baseDir, String fileName, byte[] imageBytes) throws IOException {
         Path uploadDir = baseDir.toAbsolutePath().normalize();
         Files.createDirectories(uploadDir);
 
-        Path destinationFile = uploadDir.resolve(fileName).normalize();
+        Path destinationFile = uploadDir.resolve(fileName).normalize();//ghep thu muc file vào duong dan 
         if (!destinationFile.startsWith(uploadDir)) {
             throw new IllegalArgumentException("Duong dan file anh khong hop le.");
         }

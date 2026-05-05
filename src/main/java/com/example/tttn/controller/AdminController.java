@@ -27,9 +27,8 @@ public class AdminController {
         this.productService = productService;
         this.imageStorageService = imageStorageService;
     }
-    
-    // ==================== DASHBOARD ====================
 
+    // ==================== DASHBOARD ====================
     @GetMapping({"/admin", "/admin/homeadmin"})
     public String homeAdmin(Model model) {
         model.addAttribute("totalProducts", productService.countProducts());
@@ -43,7 +42,6 @@ public class AdminController {
     }
 
     // ==================== SAN PHAM ====================
-
     //trang chinh
     @GetMapping("/admin/sanpham")
     public String adminSanpham(
@@ -72,7 +70,6 @@ public class AdminController {
         return "admin/themsanpham";
     }
 
-
     //lưu sản phẩm sau khi nhập thong tin
     @PostMapping({"/admin/sanpham", "/admin/sanpham/them"})
     public String createProduct(
@@ -100,9 +97,10 @@ public class AdminController {
         }
     }
 
+    //capnhatsanpham
     @PostMapping("/admin/sanpham/{productId}/capnhat")
     public String updateProduct(
-            @PathVariable Integer productId,
+            @PathVariable Integer productId,//lay id tu url
             @ModelAttribute("productForm") ProductForm productForm,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
             RedirectAttributes redirectAttributes) {
@@ -118,6 +116,7 @@ public class AdminController {
             String oldImagePath = current.getImage();
             String newImagePath = imageStorageService.storeProductImage(imageFile);
 
+            //xoa anh cu
             if (newImagePath != null) {
                 imageStorageService.deleteProductImage(oldImagePath);
             }
@@ -132,6 +131,7 @@ public class AdminController {
         }
     }
 
+    //xoa san pham
     @PostMapping("/admin/sanpham/{productId}/xoa")
     public String deleteProduct(@PathVariable Integer productId, RedirectAttributes redirectAttributes) {
         try {
@@ -146,13 +146,14 @@ public class AdminController {
     }
 
     // ==================== DON HANG ====================
-
+    //xem tat ca don hang
     @GetMapping("/admin/donhang")
     public String adminDonHang(Model model) {
         model.addAttribute("orders", productService.getAllOrders());
         return "admin/donhang";
     }
 
+    //chi tiet don hàng
     @GetMapping("/admin/donhang/{orderId}")
     public String adminChiTietDonHang(@PathVariable Integer orderId, Model model) {
         try {
@@ -164,6 +165,7 @@ public class AdminController {
         return "admin/chitietdonhang";
     }
 
+    //cap nhat trang thai don hang
     @PostMapping("/admin/donhang/{orderId}/trangthai")
     public String updateOrderStatus(
             @PathVariable Integer orderId,

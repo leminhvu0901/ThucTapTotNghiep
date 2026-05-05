@@ -41,6 +41,7 @@ public class ProductService {
         return productRepository.findByProductNameContainingIgnoreCaseOrderByProductIdDesc(keyword.trim());
     }
 
+    // lay san pham theo id 
     public Product getProductById(Integer productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay san pham voi id=" + productId));
@@ -55,6 +56,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    //câp nhât sản phẩm
     @Transactional
     public Product updateProduct(Integer productId, ProductForm form, String imagePath) {
         Product existing = getProductById(productId);
@@ -67,6 +69,7 @@ public class ProductService {
         return productRepository.save(existing);
     }
 
+    //xoa san pham theo id
     @Transactional
     public void deleteProduct(Integer productId) {
         productRepository.delete(getProductById(productId));
@@ -113,6 +116,7 @@ public class ProductService {
     }
 
     // ==================== DON HANG ====================
+    //lay tat ca don hang
     public List<Order> getAllOrders() {
         return orderRepository.findAllByOrderByOrderDateDesc();
     }
@@ -122,11 +126,13 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay don hang voi id=" + orderId));
     }
 
+    //lay thong tin chi tiet don hang theo id don hang
     public Order getOrderWithDetails(Integer orderId) {
         return orderRepository.findWithDetailsById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay don hang voi id=" + orderId));
     }
 
+    //ham cap nhat trang thai don hang
     @Transactional
     public Order updateOrderStatus(Integer orderId, Order.Status status) {
         if (status == null) {
@@ -142,11 +148,12 @@ public class ProductService {
     public long countProducts() {
         return productRepository.count();
     }
-
+    //dem so don hang
     public long countOrders() {
         return orderRepository.count();
     }
-
+    
+    //dem don hang theo trang tthai
     public long countOrdersByStatus(Order.Status status) {
         if (status == null) {
             return 0L;
@@ -154,6 +161,7 @@ public class ProductService {
         return orderRepository.countByStatus(status);
     }
 
+    // ds danh muc
     public List<Category> getAllCategories() {
         return categoryRepository.findAllByOrderByCategoryNameAsc();
     }
@@ -171,6 +179,7 @@ public class ProductService {
         return product;
     }
 
+    //ham tao ra object 
     private Category buildCategory(Integer categoryId) {
         if (categoryId == null) {
             return null;
@@ -180,6 +189,7 @@ public class ProductService {
         return category;
     }
 
+    //ham lam sach chuoi ky tu du vao
     private String normalizeText(String value) {
         if (value == null) {
             return null;

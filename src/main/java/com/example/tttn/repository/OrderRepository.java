@@ -13,11 +13,16 @@ import com.example.tttn.model.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
+
+    //ds don hang
     @EntityGraph(attributePaths = { "user" })
     List<Order> findAllByOrderByOrderDateDesc();
 
+
+    //ds don hang kem cac thong tin khac
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.user LEFT JOIN FETCH o.orderDetails od LEFT JOIN FETCH od.product WHERE o.orderId = :orderId")
     Optional<Order> findWithDetailsById(@Param("orderId") Integer orderId);
 
+    //dem trang thai
     long countByStatus(Order.Status status);
 }
