@@ -5,7 +5,9 @@ import com.example.tttn.model.Cart;
 import com.example.tttn.model.Product;
 import com.example.tttn.model.User;
 import com.example.tttn.model.Order;
+import com.example.tttn.model.OrderDetail;
 import com.example.tttn.repository.OrderRepository;
+import com.example.tttn.repository.OrderDetailRepository;
 import com.example.tttn.service.CartService;
 
 import java.math.BigDecimal;
@@ -29,13 +31,15 @@ public class UserController {
 
     private final ProductService productService;
     private final CartService cartService;
-	private final OrderRepository orderRepository; // cần tạo repository
-    
+	private final OrderRepository orderRepository;
+	private final OrderDetailRepository orderDetailRepository;
 
-    public UserController(ProductService productService, CartService cartService, OrderRepository orderRepository) {
+    public UserController(ProductService productService, CartService cartService,
+			OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
         this.productService = productService;
         this.cartService = cartService;
 		this.orderRepository = orderRepository;
+		this.orderDetailRepository = orderDetailRepository;
     }
 
     @ModelAttribute("cart")
@@ -116,7 +120,11 @@ public class UserController {
 
     @PostMapping("/user/thanhtoan")
     public String processCheckout(@ModelAttribute("cart") List<Cart> cart,
-                                  @ModelAttribute("user") User user, // giả sử bạn có user đăng nhập
+                                  @ModelAttribute("user") User user,
+                                  @RequestParam("fullName") String fullName,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("phone") String phone,
+                                  @RequestParam("address") String address,
                                   Model model,
                                   SessionStatus sessionStatus) {
         if (cart.isEmpty()) {
@@ -125,10 +133,18 @@ public class UserController {
 
 		user.setUsername("guest_" + System.currentTimeMillis());
 		user.setPassword("guest");
-		
+		user.setFullName(fullName);
+		user.setEmail(email);
+		user.setPhone(phone);
+		user.setAddress(address);
+
         // 1. Tạo Order
         Order order = new Order();
         order.setUser(user);
+        order.setFullName(fullName);
+        order.setEmail(email);
+        order.setPhone(phone);
+        order.setAddress(address);
         order.setOrderDate(LocalDateTime.now());
         order.setTotalAmount(calculateCartTotal(cart));
         order.setStatus(Order.Status.confirmed);
@@ -136,10 +152,20 @@ public class UserController {
         // 2. Lưu Order vào DB
         orderRepository.save(order);
 
-        // 3. Xóa giỏ hàng trong session
+        // 3. Tạo OrderDetail cho từng sản phẩm trong giỏ
+        for (Cart item : cart) {
+            OrderDetail detail = new OrderDetail();
+            detail.setOrder(order);
+            detail.setProduct(item.getProduct());
+            detail.setQuantity(item.getQuantity());
+            detail.setPrice(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            orderDetailRepository.save(detail);
+        }
+
+        // 4. Xóa giỏ hàng trong session
         sessionStatus.setComplete();
 
-          // 4. Thêm thông báo và quay về trang chính
+          // 5. Thêm thông báo và quay về trang chính
 		model.addAttribute("successMessage", "Thanh toán thành công! Cảm ơn bạn đã mua hàng.");
 		return "redirect:/user";
     }
