@@ -66,6 +66,7 @@ public class AdminController {
     // GET hien trang them san pham
     @GetMapping("/admin/sanpham/them")
     public String adminThemSanpham(Model model) {
+        model.addAttribute("productForm", new ProductForm());
         model.addAttribute("categories", productService.getAllCategories());
         return "admin/themsanpham";
     }

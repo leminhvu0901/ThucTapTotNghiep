@@ -70,7 +70,6 @@
                                                 type="text"
                                                 placeholder="Nhập tên sản phẩm..."
                                             >
-                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></div>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label fw-semibold">Mô tả</label>
@@ -80,7 +79,6 @@
                                                 th:field="*{description}"
                                                 placeholder="Nhập mô tả sản phẩm..."
                                             ></textarea>
-                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <label class="form-label fw-semibold">
@@ -95,7 +93,6 @@
                                                 type="number"
                                                 placeholder="0"
                                             >
-                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <label class="form-label fw-semibold">
@@ -109,7 +106,6 @@
                                                 type="number"
                                                 placeholder="0"
                                             >
-                                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label fw-semibold">Danh mục</label>
